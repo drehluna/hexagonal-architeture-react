@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpResponse,
   Request,
-} from "../domain/ports/HttpRequest";
+} from "../domain/ports/wire/out/HttpRequest";
 
 class AxiosAdapter implements HttpRequest {
   async request(httpRequest: Request): Promise<HttpResponse> {

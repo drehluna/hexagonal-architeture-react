@@ -1,4 +1,4 @@
-import { HttpRequest } from "../../../domain/ports/HttpRequest";
+import { HttpRequest } from "../../../domain/ports/wire/out/HttpRequest";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
 import List from "../../components/List";

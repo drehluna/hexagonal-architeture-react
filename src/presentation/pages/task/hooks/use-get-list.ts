@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { HttpRequest } from "../../../../domain/ports/HttpRequest";
-import { Todo } from "../../../../domain/ports/Todos";
+import { HttpRequest } from "../../../../domain/ports/wire/out/HttpRequest";
+import { Todo } from "../../../../domain/entities/Todo";
 
 export default function useGetList({
   httpClient,
