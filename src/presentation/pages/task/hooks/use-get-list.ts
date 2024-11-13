@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { HttpRequest } from "../../../../domain/ports/wire/out/HttpRequest";
+import {
+  HttpMethod,
+  HttpRequest,
+} from "../../../../domain/ports/wire/out/HttpRequest";
 import { Todo } from "../../../../domain/entities/Todo";
 
 export default function useGetList({
@@ -11,7 +14,7 @@ export default function useGetList({
 
   async function getTodos() {
     const response = await httpClient.request({
-      method: "get",
+      method: HttpMethod.GET,
       url: "https://jsonplaceholder.typicode.com/todos",
     });
     setTodos(response.body);

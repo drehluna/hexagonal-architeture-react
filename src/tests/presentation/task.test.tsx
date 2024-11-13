@@ -10,7 +10,7 @@ import Home from "../../presentation/pages/task";
 import axiosAdapter from "../../infra/axios-adapter";
 import useGetList from "../../presentation/pages/task/hooks/use-get-list";
 
-beforeEach(() => {
+beforeAll(() => {
   jest.spyOn(axiosAdapter, "request").mockResolvedValue({
     statusCode: 200,
     body: [{ id: 1, title: "random1", completed: false, userId: 1 }],
@@ -27,7 +27,7 @@ describe("UseGetList", () => {
     });
   });
 
-  it("expect to content 3 todos with title, id and userId", async () => {
+  it("expect to content 1 todo with title, id and userId", async () => {
     const { result } = renderHook(() =>
       useGetList({ httpClient: axiosAdapter })
     );

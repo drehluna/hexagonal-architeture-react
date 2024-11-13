@@ -5,9 +5,17 @@ export interface HttpResponse {
   body?: any;
 }
 
+export enum HttpMethod {
+  GET = "get",
+  POST = "post",
+  PUT = "put",
+  PATCH = "patch",
+  DELETE = "delete",
+}
+
 export interface Request {
   url: string;
-  method: string;
+  method: HttpMethod;
   body?: any;
 }
 
