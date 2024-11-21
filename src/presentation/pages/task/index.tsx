@@ -22,6 +22,12 @@ export default function Home({
   const { deleteTodo, todos, refetch } = useTaskInstance;
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+
+  const handleEditTodo = (todo: Todo) => {
+    setSelectedTodo(todo);
+    setModalOpen(true);
+  };
 
   const renderList = todos.map((item: Todo) => (
     <TodoList.root key={item.id}>
@@ -33,7 +39,10 @@ export default function Home({
         >
           Delete
         </Button>
-        <Button className="border-none w-28 bg-blue-500 text-white h-10 rounded-md cursor-pointer">
+        <Button
+          onClick={() => handleEditTodo(item)}
+          className="border-none w-28 bg-blue-500 text-white h-10 rounded-md cursor-pointer"
+        >
           Edit
         </Button>
       </div>
@@ -45,7 +54,7 @@ export default function Home({
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <CreateTask
           setOpen={setModalOpen}
-          selectedTodo={null}
+          selectedTodo={selectedTodo}
           useTask={useTaskInstance}
         />
       </Modal>
