@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   HttpMethod,
   HttpRequest,
@@ -11,14 +11,29 @@ export default function useGetList({
   httpClient: HttpRequest;
 }) {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const baseUrl = "https://67379b144eb22e24fca5b161.mockapi.io/api/v1/task";
 
   async function getTodos() {
-    const response = await httpClient.request({
-      method: HttpMethod.GET,
-      url: "https://jsonplaceholder.typicode.com/todos",
-    });
-    setTodos(response.body);
+    try {
+      setLoading(true);
+      const response = await httpClient.request({
+        method: HttpMethod.GET,
+        url: `${baseUrl}`,
+      });
+      setTodos(response.body);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+  const refetch = useCallback(async () => {
+    setLoading(true);
+    await getTodos();
+    setLoading(false);
+  }, [getTodos]);
 
   useEffect(() => {
     getTodos();
@@ -26,5 +41,7 @@ export default function useGetList({
 
   return {
     todos,
+    refetch,
+    loading,
   };
 }
