@@ -9,42 +9,42 @@ export default function useTask({
 }) {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  async function getTasks() {
-    const tasks = await todoRepository.getTasks();
+  async function getTodos() {
+    const tasks = await todoRepository.getTodos();
     setTodos(tasks);
     return tasks;
   }
 
-  async function createTask(todo: Pick<Todo, "title" | "completed">) {
-    await todoRepository.createTask(todo);
+  async function createTodo(todo: Pick<Todo, "title" | "completed">) {
+    await todoRepository.createTodo(todo);
     refetch();
   }
 
-  async function deleteTask(id: number) {
-    await todoRepository.deleteTask(id);
+  async function deleteTodo(id: number) {
+    await todoRepository.deleteTodo(id);
     refetch();
   }
 
-  async function updateTask(
+  async function updateTodo(
     id: number,
     todo: Pick<Todo, "title" | "completed">
   ) {
-    await todoRepository.updateTask(id, todo);
+    await todoRepository.updateTodo(id, todo);
     refetch();
   }
 
   const refetch = useCallback(() => {
-    getTasks();
-  }, [todoRepository, getTasks]);
+    getTodos();
+  }, [todoRepository, getTodos]);
 
   useEffect(() => {
-    getTasks();
+    getTodos();
   }, []);
 
   return {
-    createTask,
-    deleteTask,
-    updateTask,
+    createTodo,
+    deleteTodo,
+    updateTodo,
     refetch,
     todos,
   };

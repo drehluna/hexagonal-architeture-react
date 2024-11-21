@@ -10,7 +10,7 @@ class TodoRepository implements ITodoRepository {
     this.httpClient = httpClient;
   }
 
-  async createTask(todo: Pick<Todo, "title" | "completed">): Promise<Todo> {
+  async createTodo(todo: Pick<Todo, "title" | "completed">): Promise<Todo> {
     const response = await this.httpClient.request({
       method: HttpMethod.POST,
       url: `${this.baseUrl}`,
@@ -19,14 +19,14 @@ class TodoRepository implements ITodoRepository {
     return response.body;
   }
 
-  async deleteTask(id: number): Promise<void> {
+  async deleteTodo(id: number): Promise<void> {
     await this.httpClient.request({
       method: HttpMethod.DELETE,
       url: `${this.baseUrl}/${id}`,
     });
   }
 
-  async updateTask(id: number, todo: Todo): Promise<Todo> {
+  async updateTodo(id: number, todo: Todo): Promise<Todo> {
     const response = await this.httpClient.request({
       method: HttpMethod.PUT,
       url: `${this.baseUrl}/${id}`,
@@ -35,7 +35,7 @@ class TodoRepository implements ITodoRepository {
     return response.body;
   }
 
-  async getTasks(): Promise<Todo[]> {
+  async getTodos(): Promise<Todo[]> {
     const response = await this.httpClient.request({
       method: HttpMethod.GET,
       url: `${this.baseUrl}`,

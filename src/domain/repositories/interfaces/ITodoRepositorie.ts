@@ -1,11 +1,11 @@
 import { Todo } from "../../entities/Todo";
 
 export interface ITodoRepository {
-  createTask(todo: Pick<Todo, "title" | "completed">): Promise<Todo>;
-  deleteTask(id: number): Promise<void>;
-  updateTask(
+  createTodo(todo: Pick<Todo, "title" | "completed">): Promise<Todo>;
+  deleteTodo(id: number): Promise<void>;
+  updateTodo(
     id: number,
     todo: Pick<Todo, "title" | "completed">
   ): Promise<Todo>;
-  getTasks(): Promise<Todo[]>;
+  getTodos(): Promise<Todo[]>;
 }

@@ -19,7 +19,7 @@ export default function Home({
     todoRepository: todoRepositorieFactory(),
   });
 
-  const { deleteTask, todos, refetch } = useTaskInstance;
+  const { deleteTodo, todos, refetch } = useTaskInstance;
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
@@ -29,7 +29,7 @@ export default function Home({
       <div className="flex gap-2">
         <Button
           className="border-none w-28 bg-red-500 text-white h-10 rounded-md cursor-pointer"
-          onClick={() => deleteTask(item.id)}
+          onClick={() => deleteTodo(item.id)}
         >
           Delete
         </Button>

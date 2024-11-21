@@ -16,16 +16,16 @@ describe("TodoRepositorie", () => {
   it("should initialize repositorie", async () => {
     const todoRepositorie = new TodoRepository(fakeHttpClient);
 
-    expect(todoRepositorie.createTask).toBeDefined();
-    expect(todoRepositorie.deleteTask).toBeDefined();
-    expect(todoRepositorie.updateTask).toBeDefined();
-    expect(todoRepositorie.getTasks).toBeDefined();
+    expect(todoRepositorie.createTodo).toBeDefined();
+    expect(todoRepositorie.deleteTodo).toBeDefined();
+    expect(todoRepositorie.updateTodo).toBeDefined();
+    expect(todoRepositorie.getTodos).toBeDefined();
   });
 
   it("should create a task", async () => {
     const todoRepositorie = new TodoRepository(fakeHttpClient);
 
-    const task = await todoRepositorie.createTask({
+    const task = await todoRepositorie.createTodo({
       title: "Test Task",
       completed: false,
     });
@@ -43,7 +43,7 @@ describe("TodoRepositorie", () => {
   it("should delete a task", async () => {
     const todoRepositorie = new TodoRepository(fakeHttpClient);
 
-    await todoRepositorie.deleteTask(1);
+    await todoRepositorie.deleteTodo(1);
 
     expect(fakeHttpClient.request).toHaveBeenCalledWith({
       method: HttpMethod.DELETE,
@@ -54,7 +54,7 @@ describe("TodoRepositorie", () => {
   it("should call update a task", async () => {
     const todoRepositorie = new TodoRepository(fakeHttpClient);
 
-    await todoRepositorie.updateTask(1, {
+    await todoRepositorie.updateTodo(1, {
       id: 1,
       title: "random1",
       completed: true,
@@ -76,7 +76,7 @@ describe("TodoRepositorie", () => {
   it("should get all tasks", async () => {
     const todoRepositorie = new TodoRepository(fakeHttpClient);
 
-    const tasks = await todoRepositorie.getTasks();
+    const tasks = await todoRepositorie.getTodos();
 
     expect(tasks).toEqual([
       {

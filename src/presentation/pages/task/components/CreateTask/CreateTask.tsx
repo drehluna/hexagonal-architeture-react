@@ -17,15 +17,15 @@ export default function CreateTask({
   const [title, setTitle] = useState<string>("");
   const [completed, setCompleted] = useState<boolean>(false);
 
-  const { createTask, updateTask } = useTask;
+  const { createTodo, updateTodo } = useTask;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (selectedTodo) {
-      await updateTask(selectedTodo.id, { title, completed });
+      await updateTodo(selectedTodo.id, { title, completed });
     } else {
-      await createTask({
+      await createTodo({
         title,
         completed,
       });
