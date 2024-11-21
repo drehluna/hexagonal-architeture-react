@@ -1,43 +1,35 @@
 import { useEffect, useState } from "react";
-import { HttpRequest } from "../../../../../domain/ports/wire/out/HttpRequest";
 import Button from "../../../../components/Button";
-import useCreateTodo from "../../hooks/use-create-todo";
 import { Todo } from "../../../../../domain/entities/Todo";
-import useEditTodo from "../../hooks/use-edit.todo";
+import useTask from "../../hooks/use-task";
+
+interface CreateTaskProps {
+  setOpen: (open: boolean) => void;
+  selectedTodo: Todo | null;
+  useTask: ReturnType<typeof useTask>;
+}
 
 export default function CreateTask({
-  httpClient,
   setOpen,
-  refetch,
   selectedTodo,
-}: {
-  httpClient: HttpRequest;
-  setOpen: (open: boolean) => void;
-  refetch: () => void;
-  selectedTodo: Todo | null;
-}) {
-  const { loading, createTodo } = useCreateTodo({ httpClient });
-
+  useTask,
+}: CreateTaskProps) {
   const [title, setTitle] = useState<string>("");
   const [completed, setCompleted] = useState<boolean>(false);
 
-  const { editTodo } = useEditTodo({ httpClient });
+  const { createTask, updateTask } = useTask;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (selectedTodo) {
-      await editTodo(selectedTodo.id, { title, completed });
+      await updateTask(selectedTodo.id, { title, completed });
     } else {
-      await createTodo({
-        data: {
-          title,
-          completed,
-        },
+      await createTask({
+        title,
+        completed,
       });
     }
-
-    refetch();
 
     setOpen(false);
   };
@@ -76,7 +68,7 @@ export default function CreateTask({
 
           <Button
             className="border-none w-28 bg-blue-500 text-white h-10 rounded-md cursor-pointer"
-            disabled={loading}
+            // disabled={loading}
           >
             Create
           </Button>

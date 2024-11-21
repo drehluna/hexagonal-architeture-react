@@ -8,7 +8,8 @@ import {
 import "@testing-library/jest-dom";
 import Home from "../../presentation/pages/task";
 import axiosAdapter from "../../infra/axios-adapter";
-import useGetList from "../../presentation/pages/task/hooks/use-get-list";
+import useTask from "../../presentation/pages/task/hooks/use-task";
+import todoRepositorieFactory from "../../di/repositories/todoRepositorie";
 
 beforeAll(() => {
   jest.spyOn(axiosAdapter, "request").mockResolvedValue({
@@ -20,7 +21,7 @@ beforeAll(() => {
 describe("UseGetList", () => {
   it("expect to render hook and returns a list of todos", async () => {
     const { result } = renderHook(() =>
-      useGetList({ httpClient: axiosAdapter })
+      useTask({ todoRepository: todoRepositorieFactory() })
     );
     await waitFor(() => {
       expect(result.current.todos).toHaveLength(1);
@@ -29,7 +30,7 @@ describe("UseGetList", () => {
 
   it("expect to content 1 todo with title, id and userId", async () => {
     const { result } = renderHook(() =>
-      useGetList({ httpClient: axiosAdapter })
+      useTask({ todoRepository: todoRepositorieFactory() })
     );
     await waitFor(() => {
       expect(result.current.todos).toEqual([
@@ -42,7 +43,7 @@ describe("UseGetList", () => {
 describe("Home", () => {
   it("expect to render component and show a list of todos", async () => {
     await act(async () => {
-      render(<Home httpClient={axiosAdapter} />);
+      render(<Home todoRepositorieFactory={todoRepositorieFactory} />);
     });
 
     await waitFor(() => {

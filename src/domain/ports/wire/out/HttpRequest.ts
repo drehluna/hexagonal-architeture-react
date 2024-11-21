@@ -19,6 +19,6 @@ export interface Request {
   body?: any;
 }
 
-export interface HttpRequest {
+export interface HttpClient {
   request(request: Request): Promise<HttpResponse>;
 }

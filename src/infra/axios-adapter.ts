@@ -1,11 +1,11 @@
 import axios from "axios";
 import {
-  HttpRequest,
+  HttpClient,
   HttpResponse,
   Request,
 } from "../domain/ports/wire/out/HttpRequest";
 
-class AxiosAdapter implements HttpRequest {
+class AxiosAdapter implements HttpClient {
   async request(httpRequest: Request): Promise<HttpResponse> {
     const response = await axios.request({
       method: httpRequest.method,

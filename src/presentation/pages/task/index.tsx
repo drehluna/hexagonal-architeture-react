@@ -1,61 +1,52 @@
-import { useEffect, useState } from "react";
-import { HttpRequest } from "../../../domain/ports/wire/out/HttpRequest";
+import { useState } from "react";
 import Button from "../../components/Button";
 import Card from "../../components/Card";
 import List from "../../components/List";
+
+import { Todo } from "../../../domain/entities/Todo";
+import useTask from "./hooks/use-task";
+import { ITodoRepository } from "../../../domain/repositories/interfaces/ITodoRepositorie";
+import { TodoList } from "./components/render-todo-list";
 import Modal from "../../components/Modal";
 import CreateTask from "./components/CreateTask/CreateTask";
-import useGetList from "./hooks/use-get-list";
-import useDeleteTodo from "./hooks/use-delete-todo";
-import useEditTodo from "./hooks/use-edit.todo";
-import { Todo } from "../../../domain/entities/Todo";
 
-export default function Home({ httpClient }: { httpClient: HttpRequest }) {
-  const { todos, refetch } = useGetList({ httpClient });
-  const [open, setOpen] = useState<boolean>(false);
+export default function Home({
+  todoRepositorieFactory,
+}: {
+  todoRepositorieFactory: () => ITodoRepository;
+}) {
+  const useTaskInstance = useTask({
+    todoRepository: todoRepositorieFactory(),
+  });
 
-  const { editTodo } = useEditTodo({ httpClient });
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const { deleteTask, todos, refetch } = useTaskInstance;
 
-  const { deleteTodo } = useDeleteTodo({ httpClient });
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const renderList = () => {
-    return todos.map((item) => (
-      <h1
-        key={item.id}
-        className="flex items-center justify-between border border-gray-300 p-5"
-      >
-        {item.title} {item.completed ? "✅" : "❌"}
-        <div className="flex gap-2">
-          <Button
-            className="border-none w-28 bg-red-500 text-white h-10 rounded-md cursor-pointer"
-            onClick={() => deleteTodo(item.id)}
-          >
-            Delete
-          </Button>
-
-          <Button
-            className="border-none w-28 bg-blue-500 text-white h-10 rounded-md cursor-pointer"
-            onClick={() => {
-              setSelectedTodo(item);
-              setOpen(true);
-            }}
-          >
-            Edit
-          </Button>
-        </div>
-      </h1>
-    ));
-  };
+  const renderList = todos.map((item: Todo) => (
+    <TodoList.root key={item.id}>
+      <TodoList.title>{item.title}</TodoList.title>
+      <div className="flex gap-2">
+        <Button
+          className="border-none w-28 bg-red-500 text-white h-10 rounded-md cursor-pointer"
+          onClick={() => deleteTask(item.id)}
+        >
+          Delete
+        </Button>
+        <Button className="border-none w-28 bg-blue-500 text-white h-10 rounded-md cursor-pointer">
+          Edit
+        </Button>
+      </div>
+    </TodoList.root>
+  ));
 
   return (
     <>
-      <Modal open={open} onClose={() => setOpen(false)}>
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <CreateTask
-          httpClient={httpClient}
-          setOpen={setOpen}
-          refetch={refetch}
-          selectedTodo={selectedTodo}
+          setOpen={setModalOpen}
+          selectedTodo={null}
+          useTask={useTaskInstance}
         />
       </Modal>
       <Card className="w-[600px] h-[600px] flex flex-col shadow-custom">
@@ -64,7 +55,7 @@ export default function Home({ httpClient }: { httpClient: HttpRequest }) {
           <div className="flex gap-2">
             <Button
               className="border-none w-28 bg-blue-500 text-white h-10 rounded-md cursor-pointer"
-              onClick={() => setOpen(true)}
+              onClick={() => setModalOpen(true)}
             >
               Create Task
             </Button>
@@ -76,7 +67,7 @@ export default function Home({ httpClient }: { httpClient: HttpRequest }) {
             </Button>
           </div>
         </header>
-        <List className="flex-1 overflow-y-auto mt-10 ">{renderList()}</List>
+        <List className="flex-1 overflow-y-auto mt-10 ">{renderList}</List>
       </Card>
     </>
   );
