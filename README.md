@@ -28,6 +28,7 @@ This is a simple project to implement and practice the principles of hexagonal a
 - TypeScript
 - Vite
 - Jest
+- Tailwind
 
 ## How to run
 
