@@ -27,6 +27,7 @@ This is a simple project to implement and practice the principles of hexagonal a
 - React
 - TypeScript
 - Vite
+- Jest
 
 ## How to run
 
